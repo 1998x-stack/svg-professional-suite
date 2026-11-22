@@ -1,0 +1,47 @@
+name: Materialize source bundle
+
+on:
+  push:
+    branches: [feat/v1-foundation]
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Expand the reviewed source bundle
+        run: |
+          python - <<'PY'
+          import base64
+          import io
+          import tarfile
+          from pathlib import Path
+
+          root = Path(".").resolve()
+          encoded = Path("bootstrap-bundle.tar.gz.b64")
+          archive = base64.b64decode(encoded.read_bytes())
+          with tarfile.open(fileobj=io.BytesIO(archive), mode="r:gz") as bundle:
+              for member in bundle.getmembers():
+                  if not member.isfile():
+                      continue
+                  target = (root / member.name).resolve()
+                  if root not in target.parents:
+                      raise RuntimeError(f"Unsafe archive path: {member.name}")
+                  target.parent.mkdir(parents=True, exist_ok=True)
+                  source = bundle.extractfile(member)
+                  if source is None:
+                      raise RuntimeError(f"Missing archive member: {member.name}")
+                  target.write_bytes(source.read())
+          encoded.unlink()
+          Path(".github/workflows/bootstrap.yml").unlink()
+          PY
+      - name: Commit materialized project
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "build: materialize SVG Professional Suite v0.1"
+          git push origin HEAD:feat/v1-foundation
