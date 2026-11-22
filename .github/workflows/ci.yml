@@ -1,0 +1,22 @@
+name: CI
+on:
+  push:
+    branches: [main, "feat/**"]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Unit and integration tests
+        run: python -m unittest discover -s tests -v
+      - name: Generate and validate example
+        run: |
+          python scripts/generate_svg.py --spec examples/architecture/multi-agent-research.graph.json --output /tmp/research.svg
+          python scripts/validate_svg.py /tmp/research.svg --report /tmp/qa.json
