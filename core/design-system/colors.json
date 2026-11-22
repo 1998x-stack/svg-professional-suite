@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0",
+  "semantic": {
+    "ink": "#172033",
+    "muted": "#64748B",
+    "canvas": "#FFFFFF",
+    "surface": "#F8FAFC",
+    "border": "#CBD5E1",
+    "primary": "#2563EB",
+    "secondary": "#0F766E",
+    "accent": "#7C3AED",
+    "success": "#15803D",
+    "warning": "#B45309",
+    "danger": "#B91C1C"
+  },
+  "guidance": {"max_primary_hues": 3, "do_not_encode_meaning_with_color_alone": true}
+}

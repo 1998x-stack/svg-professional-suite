@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0",
+  "title": "Multi-Agent Research Workflow",
+  "description": "A directed workflow from planning through evidence review and synthesis.",
+  "layout": {
+    "direction": "TB",
+    "node_width": 210,
+    "node_height": 78,
+    "rank_gap": 96,
+    "node_gap": 42,
+    "margin": 52
+  },
+  "nodes": [
+    {"id": "planner", "label": "Planner", "subtitle": "Decompose research question"},
+    {"id": "researcher", "label": "Researcher", "subtitle": "Collect sources and evidence"},
+    {"id": "reviewer", "label": "Evidence Reviewer", "subtitle": "Check claims and provenance"},
+    {"id": "critic", "label": "Critic", "subtitle": "Find gaps and contradictions"},
+    {"id": "synthesizer", "label": "Synthesizer", "subtitle": "Produce structured report"}
+  ],
+  "edges": [
+    {"from": "planner", "to": "researcher", "label": "research plan"},
+    {"from": "researcher", "to": "reviewer", "label": "evidence"},
+    {"from": "reviewer", "to": "critic", "label": "reviewed evidence"},
+    {"from": "critic", "to": "synthesizer", "label": "approved findings"}
+  ],
+  "theme": "light"
+}
